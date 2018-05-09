@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">2048Zh</string>
-    <string name="score">Score</string>
+    <string name="score">Score:</string>
+    <string name="highest_score">Highest Score:</string>
+    <string name="restart">重新开始</string>
+    <string name="list">排行榜</string>
+    <string name="music">音乐</string>
+    <string name="quit">退出</string>
 </resources>
