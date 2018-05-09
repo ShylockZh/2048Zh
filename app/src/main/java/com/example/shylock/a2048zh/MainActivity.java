@@ -19,10 +19,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearScore(){
-
+        score = 0;
+        showScore();
     }
 
-//    private
+    public void showScore(){
+        tvScore.setText(score + "");
+    }
+
+    public void addScore(int s){
+        score += s;
+        showScore();
+    }
+
+
+    private int score = 0;
     private TextView tvScore;
     private  static MainActivity mainActivity = null;
 

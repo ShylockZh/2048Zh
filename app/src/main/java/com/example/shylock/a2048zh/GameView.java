@@ -31,15 +31,11 @@ public class GameView extends GridLayout {
         initGameView();
     }
 
-    public GameView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initGameView();
-    }
-
     private void initGameView(){
         setColumnCount(4);
         setBackgroundColor(0xffbbada0);
         addCards(GetCardWidth(),GetCardWidth());
+//        MainActivity.getMainActivity().clearScore();
         setOnTouchListener(new View.OnTouchListener(){
 
             private float startX,startY,offsetX,offsetY;
@@ -84,7 +80,7 @@ public class GameView extends GridLayout {
         int cardWidth;
         cardWidth = displayMetrics.widthPixels;
 
-        return (cardWidth - 15) / 4;
+        return (cardWidth - 10) / 4;
 
 
     }
@@ -103,17 +99,12 @@ public class GameView extends GridLayout {
     }
 
     private void startGame(){
+
         for(int y = 0;y < 4;y++){
             for(int x = 0;x <4;x++){
                 cardsMap[x][y].setNum(0);
             }
         }
-        addRandomNum();
-        addRandomNum();
-        addRandomNum();
-        addRandomNum();
-        addRandomNum();
-        addRandomNum();
         addRandomNum();
         addRandomNum();
     }
@@ -135,6 +126,7 @@ public class GameView extends GridLayout {
 
     private void swipeleft(){
         System.out.println("left");
+        boolean flag = false;
         for(int y = 0;y < 4;y++){
             for(int x = 0;x < 4;x++){
 
@@ -146,10 +138,13 @@ public class GameView extends GridLayout {
                             cardsMap[x1][y].setNum(0);
 
                             x--;
+                            flag = true;
                             break;
                         }else if(cardsMap[x][y].equals(cardsMap[x1][y])){//数字相同
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum() * 2);
                             cardsMap[x1][y].setNum(0);
+                            MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+                            flag = true;
                             break;
                         }
                     }
@@ -157,9 +152,13 @@ public class GameView extends GridLayout {
 
             }
         }
+        if(flag){
+            addRandomNum();
+        }
     }
     private void swiperight(){
         System.out.println("right");
+        boolean flag = false;
         for (int y = 0; y < 4; y++) {
             for (int x = 3; x >= 0; x--) {
 
@@ -171,19 +170,26 @@ public class GameView extends GridLayout {
                             cardsMap[x1][y].setNum(0);
 
                             x++;
+                            flag = true;
                             break;
                         } else if(cardsMap[x][y].equals(cardsMap[x1][y])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x1][y].setNum(0);
+                            MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+                            flag = true;
                             break;
                         }
                     }
                 }
             }
         }
+        if(flag){
+            addRandomNum();
+        }
     }
     private void swipeup(){
         System.out.println("up");
+        boolean flag = false;
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
 
@@ -195,19 +201,26 @@ public class GameView extends GridLayout {
                             cardsMap[x][y1].setNum(0);
 
                             y--;
+                            flag = true;
                             break;
                         } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x][y1].setNum(0);
+                            MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+                            flag = true;
                             break;
                         }
                     }
                 }
             }
         }
+        if(flag){
+            addRandomNum();
+        }
     }
     private void swipedown(){
         System.out.println("down");
+        boolean flag = false;
         for (int x = 0; x < 4; x++) {
             for (int y = 3; y >=0; y--) {
 
@@ -219,15 +232,22 @@ public class GameView extends GridLayout {
                             cardsMap[x][y1].setNum(0);
 
                             y++;
+                            flag = true;
                             break;
                         } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x][y1].setNum(0);
+                            MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+                            flag = true;
                             break;
                         }
+
                     }
                 }
             }
+        }
+        if(flag){
+            addRandomNum();
         }
     }
 
