@@ -110,6 +110,12 @@ public class GameView extends GridLayout {
         }
         addRandomNum();
         addRandomNum();
+        addRandomNum();
+        addRandomNum();
+        addRandomNum();
+        addRandomNum();
+        addRandomNum();
+        addRandomNum();
     }
 
     private void addRandomNum(){
@@ -129,15 +135,100 @@ public class GameView extends GridLayout {
 
     private void swipeleft(){
         System.out.println("left");
+        for(int y = 0;y < 4;y++){
+            for(int x = 0;x < 4;x++){
+
+                for(int x1 = x + 1;x1 < 4;x1++){//向右遍历
+                    if(cardsMap[x1][y].getNum() > 0){
+
+                        if(cardsMap[x][y].getNum() <= 0){
+                            cardsMap[x][y].setNum(cardsMap[x1][y].getNum());
+                            cardsMap[x1][y].setNum(0);
+
+                            x--;
+                            break;
+                        }else if(cardsMap[x][y].equals(cardsMap[x1][y])){//数字相同
+                            cardsMap[x][y].setNum(cardsMap[x][y].getNum() * 2);
+                            cardsMap[x1][y].setNum(0);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
     }
     private void swiperight(){
         System.out.println("right");
+        for (int y = 0; y < 4; y++) {
+            for (int x = 3; x >= 0; x--) {
+
+                for (int x1 = x - 1; x1 >=0; x1--) {
+                    if (cardsMap[x1][y].getNum() > 0) {
+
+                        if (cardsMap[x][y].getNum() <= 0) {
+                            cardsMap[x][y].setNum(cardsMap[x1][y].getNum());
+                            cardsMap[x1][y].setNum(0);
+
+                            x++;
+                            break;
+                        } else if(cardsMap[x][y].equals(cardsMap[x1][y])){
+                            cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+                            cardsMap[x1][y].setNum(0);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
     private void swipeup(){
         System.out.println("up");
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+
+                for (int y1 = y + 1; y1 < 4; y1++) {
+                    if (cardsMap[x][y1].getNum() > 0) {
+
+                        if (cardsMap[x][y].getNum() <= 0) {
+                            cardsMap[x][y].setNum(cardsMap[x][y1].getNum());
+                            cardsMap[x][y1].setNum(0);
+
+                            y--;
+                            break;
+                        } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
+                            cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+                            cardsMap[x][y1].setNum(0);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
     private void swipedown(){
         System.out.println("down");
+        for (int x = 0; x < 4; x++) {
+            for (int y = 3; y >=0; y--) {
+
+                for (int y1 = y - 1; y1 >= 0; y1--) {
+                    if (cardsMap[x][y1].getNum() > 0) {
+
+                        if (cardsMap[x][y].getNum() <= 0) {
+                            cardsMap[x][y].setNum(cardsMap[x][y1].getNum());
+                            cardsMap[x][y1].setNum(0);
+
+                            y++;
+                            break;
+                        } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
+                            cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+                            cardsMap[x][y1].setNum(0);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private Card[][] cardsMap = new Card[4][4];
