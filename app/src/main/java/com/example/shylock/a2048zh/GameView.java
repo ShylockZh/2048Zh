@@ -1,11 +1,14 @@
 package com.example.shylock.a2048zh;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridLayout;
+
+import java.util.ArrayList;
 
 
 /**
@@ -13,25 +16,30 @@ import android.widget.GridLayout;
  */
 
 public class GameView extends GridLayout {
-    public GameView(Context context, AttributeSet attrs, int defStyle){
-        super(context, attrs, defStyle);
-        initGameView();
-    }
-    public GameView(Context context){
+    public GameView(Context context) {
         super(context);
         initGameView();
     }
-    public GameView(Context context, AttributeSet attrs){
-        super(context,attrs);
+
+    public GameView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initGameView();
+    }
+
+    public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initGameView();
+    }
+
+    public GameView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         initGameView();
     }
 
     private void initGameView(){
         setColumnCount(4);
         setBackgroundColor(0xffbbada0);
-
         addCards(GetCardWidth(),GetCardWidth());
-
         setOnTouchListener(new View.OnTouchListener(){
 
             private float startX,startY,offsetX,offsetY;
@@ -76,7 +84,9 @@ public class GameView extends GridLayout {
         int cardWidth;
         cardWidth = displayMetrics.widthPixels;
 
-        return (cardWidth - 10) / 4;
+        return (cardWidth - 15) / 4;
+
+
     }
 
     private void addCards(int cardWith, int cardHeight){
@@ -84,11 +94,37 @@ public class GameView extends GridLayout {
         for(int y = 0;y < 4;y++){
             for(int x = 0;x < 4;x++){
                 c = new Card(getContext());
-                c.setNum(2);
+                c.setNum(0);
                 addView(c,cardWith,cardHeight);
-                System.out.println("123");
+                cardsMap[x][y] = c;//记录卡片位置状态
             }
         }
+        startGame();
+    }
+
+    private void startGame(){
+        for(int y = 0;y < 4;y++){
+            for(int x = 0;x <4;x++){
+                cardsMap[x][y].setNum(0);
+            }
+        }
+        addRandomNum();
+        addRandomNum();
+    }
+
+    private void addRandomNum(){
+
+        emptyPoints.clear();
+
+        for(int y = 0;y < 4;y++){
+            for(int x = 0;x < 4;x++){
+                if(cardsMap[x][y].getNum() <= 0){ //是空点
+                    emptyPoints.add(new Point(x,y));
+                }
+            }
+        }
+        Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));//随机产生一个空点
+        cardsMap[p.x][p.y].setNum(Math.random() > 0.1 ? 2 : 4);//2：4=9:1
     }
 
     private void swipeleft(){
@@ -103,4 +139,7 @@ public class GameView extends GridLayout {
     private void swipedown(){
         System.out.println("down");
     }
+
+    private Card[][] cardsMap = new Card[4][4];
+    private ArrayList<Point> emptyPoints = new ArrayList<Point>();
 }

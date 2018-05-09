@@ -33,8 +33,12 @@ public class Card extends FrameLayout {
 
     public void setNum(int num) {
         this.num = num;
+        if(num <= 0){
+            label.setText("");
+        }else{
+            label.setText(num+"");//转换成字符串
+        }
 
-        label.setText(num+"");//转换成字符串
     }
 
     public boolean equals(Card o){
