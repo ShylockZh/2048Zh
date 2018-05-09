@@ -1,6 +1,8 @@
 package com.example.shylock.a2048zh;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -54,17 +56,18 @@ public class GameView extends GridLayout {
 
                         if(Math.abs(offsetX)>Math.abs(offsetY)){
                             if(offsetX < -5){
-                                swipeleft();
+                                swipeLeft();
                             }else if(offsetX > 5){
-                                swiperight();
+                                swipeRight();
                             }
                         }else{
                             if(offsetY < -5){
-                                swipeup();
+                                swipeUp();
                             }else if(offsetX > 5){
-                                swipedown();
+                                swipeDown();
                             }
                         }
+                        break;
                 }
 
                 return true;
@@ -121,11 +124,11 @@ public class GameView extends GridLayout {
             }
         }
         Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));//随机产生一个空点
-        cardsMap[p.x][p.y].setNum(Math.random() > 0.1 ? 2 : 4);//2：4=9:1
+        cardsMap[p.x][p.y].setNum(Math.random() > 0.08 ? 2 : 4);//2：4=9:1
     }
 
-    private void swipeleft(){
-        System.out.println("left");
+    private void swipeLeft(){
+//        System.out.println("left");
         boolean flag = false;
         for(int y = 0;y < 4;y++){
             for(int x = 0;x < 4;x++){
@@ -139,14 +142,13 @@ public class GameView extends GridLayout {
 
                             x--;
                             flag = true;
-                            break;
                         }else if(cardsMap[x][y].equals(cardsMap[x1][y])){//数字相同
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum() * 2);
                             cardsMap[x1][y].setNum(0);
                             MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
                             flag = true;
-                            break;
                         }
+                        break;
                     }
                 }
 
@@ -154,10 +156,11 @@ public class GameView extends GridLayout {
         }
         if(flag){
             addRandomNum();
+            checkComplete();
         }
     }
-    private void swiperight(){
-        System.out.println("right");
+    private void swipeRight(){
+//        System.out.println("right");
         boolean flag = false;
         for (int y = 0; y < 4; y++) {
             for (int x = 3; x >= 0; x--) {
@@ -171,24 +174,24 @@ public class GameView extends GridLayout {
 
                             x++;
                             flag = true;
-                            break;
                         } else if(cardsMap[x][y].equals(cardsMap[x1][y])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x1][y].setNum(0);
                             MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
                             flag = true;
-                            break;
                         }
+                        break;
                     }
                 }
             }
         }
         if(flag){
             addRandomNum();
+            checkComplete();
         }
     }
-    private void swipeup(){
-        System.out.println("up");
+    private void swipeUp(){
+//        System.out.println("up");
         boolean flag = false;
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
@@ -202,24 +205,24 @@ public class GameView extends GridLayout {
 
                             y--;
                             flag = true;
-                            break;
                         } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x][y1].setNum(0);
                             MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
                             flag = true;
-                            break;
                         }
+                        break;
                     }
                 }
             }
         }
         if(flag){
             addRandomNum();
+            checkComplete();
         }
     }
-    private void swipedown(){
-        System.out.println("down");
+    private void swipeDown(){
+//        System.out.println("down");
         boolean flag = false;
         for (int x = 0; x < 4; x++) {
             for (int y = 3; y >=0; y--) {
@@ -233,22 +236,49 @@ public class GameView extends GridLayout {
 
                             y++;
                             flag = true;
-                            break;
                         } else if(cardsMap[x][y].equals(cardsMap[x][y1])){
                             cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
                             cardsMap[x][y1].setNum(0);
                             MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
                             flag = true;
-                            break;
                         }
-
+                        break;
                     }
                 }
             }
         }
         if(flag){
             addRandomNum();
+            checkComplete();
         }
+    }
+
+    private void checkComplete(){
+
+        boolean complete = true;
+
+        ALL:
+        for(int y = 0;y < 4;y++){
+            for(int x = 0;x < 4;x++){
+                if(cardsMap[x][y].getNum() == 0 ||
+                        (x > 1 && cardsMap[x][y].equals(cardsMap[x - 1][y]))||
+                        (x < 3 && cardsMap[x][y].equals(cardsMap[x + 1][y]))||
+                        (y > 0 && cardsMap[x][y].equals(cardsMap[x][y - 1]))||
+                        (y < 3 && cardsMap[x][y].equals(cardsMap[x][y + 1]))){
+                    complete = false;
+                    break ALL;
+                }
+            }
+        }
+        if(complete){
+            new AlertDialog.Builder(getContext()).setTitle("你好").setMessage("游戏结束").setPositiveButton("再来一次", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startGame();
+                }
+            }).show();
+        }
+
     }
 
     private Card[][] cardsMap = new Card[4][4];
