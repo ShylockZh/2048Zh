@@ -3,7 +3,10 @@
     <string name="score">Score:</string>
     <string name="highest_score">Highest Score:</string>
     <string name="restart">重新开始</string>
-    <string name="list">排行榜</string>
-    <string name="music">音乐</string>
+    <string name="list">游戏记录</string>
+    <string name="setting">设置</string>
     <string name="quit">退出</string>
+    <string name="music_seting">音乐</string>
+    <string name="color_setting">颜色</string>
+    <string name="clear_note">清空游戏记录</string>
 </resources>

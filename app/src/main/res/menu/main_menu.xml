@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/music"
+        android:title="@string/music_seting" />
+    <item
+        android:id="@+id/color"
+        android:title="@string/color_setting" />
+    <item
+        android:id="@+id/clear"
+        android:title="@string/clear_note" />
+</menu>
