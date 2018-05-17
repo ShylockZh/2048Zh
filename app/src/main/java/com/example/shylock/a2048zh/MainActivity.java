@@ -1,5 +1,7 @@
 package com.example.shylock.a2048zh;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -17,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     public MainActivity(){
         mainActivity = this;
     }
+
+    int color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +66,14 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.music:
+
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.music_seting),Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.color:
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.color_setting),Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this,ColorSettingActivity.class);
+//                                startActivity(intent);
+                                startActivityForResult(intent,1);
                                 break;
                             case R.id.clear:
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.clear_note),Toast.LENGTH_SHORT).show();
@@ -78,4 +86,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case 1:
+                color = data.getIntExtra("color", Color.RED);
+                View v = findViewById(R.id.layout);
+                v.setBackgroundColor(color);
+                break;
+        }
+    }
 }

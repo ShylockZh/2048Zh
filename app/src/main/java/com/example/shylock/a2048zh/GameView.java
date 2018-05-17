@@ -35,7 +35,7 @@ public class GameView extends GridLayout {
 
     private void initGameView(){
         setColumnCount(4);
-        setBackgroundColor(0xffbbada0);
+//        setBackgroundColor(0xffbbada0);
         addCards(GetCardWidth(),GetCardWidth());
 //        MainActivity.getMainActivity().clearScore();
         setOnTouchListener(new View.OnTouchListener(){
