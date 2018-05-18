@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
     Cursor cursor;
 
     int color;
-    TextView score_text;
+    TextView score_text,hiscore;
     String username;
     boolean isPlay = true;
     MediaPlayer player;
@@ -57,11 +57,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         setting_btn = findViewById(R.id.setting_btn);
+        hiscore = findViewById(R.id.hiScore);
         tvScore = (TextView) findViewById(R.id.tvScore);
         score_text = findViewById(R.id.score_text);
         player = MediaPlayer.create(this,R.raw.bgm);
         player.setLooping(true);
         player.start();
+
+
+
 //登录页面
         Intent i = getIntent();
         Log.d("Main", "onCreate: "+ i.getStringExtra("myName") );
@@ -72,11 +76,22 @@ public class MainActivity extends Activity {
         dbHelper = new MyDBHelper(this,"db.db",null,1);
         db = dbHelper.getWritableDatabase();
 
+        getHigscore();
 
     }
     public void togetscore(View v){
         Intent gets = new Intent(this,scoreList.class);
         startActivity(gets);
+    }
+    public void getHigscore(){
+        cursor = db.rawQuery("select max(score) score from getscore",null);
+        if(cursor.moveToFirst()){
+            do{
+                String high = String.valueOf(cursor.getInt(cursor.getColumnIndex("score")));
+                hiscore.setText(high);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
     }
     public void restart(View v){
 
@@ -84,11 +99,12 @@ public class MainActivity extends Activity {
         builder.setTitle("你好").setMessage("确认重新开始？");
         builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dixalogInterface, int i) {
                 db.execSQL("insert into getscore(name,score) values(?,?)",new Object[]{username,score});
                 cursor = db.rawQuery("select * from  getscore",null);
                 clearScore();
                 GameView.getGameview().startGame();
+                getHigscore();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -156,6 +172,7 @@ public class MainActivity extends Activity {
                             case R.id.clear:
                                 Toast.makeText(MainActivity.this,getResources().getString(R.string.clear_finish),Toast.LENGTH_SHORT).show();
                                 db.delete("getscore",null,null);
+                                getHigscore();
                                 break;
                         }
                         return true;
