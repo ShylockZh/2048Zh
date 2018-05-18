@@ -9,4 +9,7 @@
     <string name="music_seting">音乐</string>
     <string name="color_setting">颜色</string>
     <string name="clear_note">清空游戏记录</string>
+    <string name="music_play">音乐开</string>
+    <string name="music_stop">音乐关</string>
+    <string name="clear_finish">得分记录已清空</string>
 </resources>

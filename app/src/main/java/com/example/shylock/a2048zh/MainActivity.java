@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +35,16 @@ public class MainActivity extends Activity {
     public MainActivity(){
         mainActivity=this;
     }
-    @SuppressLint("StaticFieldLeak")
     private static MainActivity mainActivity=null;
     public static MainActivity getMainActivity() {
         return mainActivity;
     }
     Button setting_btn;
     ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
+
+    MyDBHelper dbHelper;
+    SQLiteDatabase db;
+    Cursor cursor;
 
     int color;
     TextView score_text;
@@ -57,15 +62,21 @@ public class MainActivity extends Activity {
         player = MediaPlayer.create(this,R.raw.bgm);
         player.setLooping(true);
         player.start();
-
+//登录页面
         Intent i = getIntent();
         Log.d("Main", "onCreate: "+ i.getStringExtra("myName") );
         username = i.getStringExtra("myName");
         score_text.setText(username + "'s Score:");
         popliset();
+//    数据库
+        dbHelper = new MyDBHelper(this,"db.db",null,1);
+        db = dbHelper.getWritableDatabase();
 
 
-
+    }
+    public void togetscore(View v){
+        Intent gets = new Intent(this,scoreList.class);
+        startActivity(gets);
     }
     public void restart(View v){
 
@@ -74,6 +85,8 @@ public class MainActivity extends Activity {
         builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                db.execSQL("insert into getscore(name,score) values(?,?)",new Object[]{username,score});
+                cursor = db.rawQuery("select * from  getscore",null);
                 clearScore();
                 GameView.getGameview().startGame();
             }
@@ -102,7 +115,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        player.stop();
+        player.pause();
+        isPlay = false;
     }
 
     private int score = 0;
@@ -123,22 +137,25 @@ public class MainActivity extends Activity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.music:
-                                Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.music_seting),Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.music_seting),Toast.LENGTH_SHORT).show();
                                 if(isPlay){
+                                    Toast.makeText(MainActivity.this,getResources().getString(R.string.music_stop),Toast.LENGTH_SHORT).show();
                                     player.pause();
                                     isPlay = false;
                                 }else{
+                                    Toast.makeText(MainActivity.this,getResources().getString(R.string.music_play),Toast.LENGTH_SHORT).show();
                                     player.start();
                                     isPlay = true;
                                 }
                                 break;
                             case R.id.color:
-                                Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.color_setting),Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.color_setting),Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this,ColorSettingActivity.class);
                                 startActivityForResult(intent,1);
                                 break;
                             case R.id.clear:
-                                Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.clear_note),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this,getResources().getString(R.string.clear_finish),Toast.LENGTH_SHORT).show();
+                                db.delete("getscore",null,null);
                                 break;
                         }
                         return true;
@@ -160,9 +177,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void store_score(){
 
-    }
 
     private long lastBack = 0;
     @Override
