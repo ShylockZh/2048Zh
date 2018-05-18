@@ -1,8 +1,10 @@
 package com.example.shylock.a2048zh;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -23,6 +25,11 @@ public class GameView extends GridLayout {
         initGameView();
     }
 
+    private  static GameView gameView = null;
+    public static GameView getGameView(){
+        return gameView;
+    }
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initGameView();
@@ -33,9 +40,8 @@ public class GameView extends GridLayout {
         initGameView();
     }
 
-    private void initGameView(){
+    private void  initGameView(){
         setColumnCount(4);
-//        setBackgroundColor(0xffbbada0);
         addCards(GetCardWidth(),GetCardWidth());
 //        MainActivity.getMainActivity().clearScore();
         setOnTouchListener(new View.OnTouchListener(){
@@ -101,7 +107,7 @@ public class GameView extends GridLayout {
         startGame();
     }
 
-    private void startGame(){
+    public void startGame(){
 
         for(int y = 0;y < 4;y++){
             for(int x = 0;x <4;x++){
@@ -278,9 +284,10 @@ public class GameView extends GridLayout {
                 }
             }).show();
         }
-
     }
+
 
     private Card[][] cardsMap = new Card[4][4];
     private ArrayList<Point> emptyPoints = new ArrayList<Point>();
+
 }

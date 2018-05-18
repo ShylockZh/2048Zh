@@ -2,8 +2,10 @@ package com.example.shylock.a2048zh;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,15 +15,28 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button setting_btn;
+    Button setting_btn,restart_btn;
     public MainActivity(){
         mainActivity = this;
     }
 
-    int color;
+    ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
 
+    int color;
+    TextView score_text;
+    String username;
+    boolean isPlay = true;
+    MediaPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +44,18 @@ public class MainActivity extends AppCompatActivity {
 
         setting_btn = findViewById(R.id.setting_btn);
         tvScore = (TextView) findViewById(R.id.tvScore);
-        popliset();
-    }
+        score_text = findViewById(R.id.score_text);
+        player = MediaPlayer.create(this,R.raw.bgm);
+        player.setLooping(true);
+        player.start();
 
+        Intent i = getIntent();
+        Log.d("Main", "onCreate: "+ i.getStringExtra("myName") );
+        username = i.getStringExtra("myName");
+        score_text.setText(username + "'s Score:");
+        popliset();
+
+    }
     public void clearScore(){
         score = 0;
         showScore();
@@ -52,11 +76,12 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getMainActivity(){
         return mainActivity;
     }
-
     public void popliset(){
         setting_btn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+//                GameView.getGameView().startGame();
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this,view);
                 popupMenu.inflate(R.menu.main_menu);
                 popupMenu.show();
@@ -66,13 +91,19 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.music:
-
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.music_seting),Toast.LENGTH_SHORT).show();
+                                if(isPlay){
+                                    player.pause();
+                                    isPlay = false;
+                                }else{
+                                    player.start();
+                                    isPlay = true;
+                                }
+
                                 break;
                             case R.id.color:
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.color_setting),Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this,ColorSettingActivity.class);
-//                                startActivity(intent);
                                 startActivityForResult(intent,1);
                                 break;
                             case R.id.clear:
@@ -96,5 +127,21 @@ public class MainActivity extends AppCompatActivity {
                 v.setBackgroundColor(color);
                 break;
         }
+    }
+
+    public void store_score(){
+
+
+    }
+
+    private long lastBack = 0;
+    @Override
+    public void onBackPressed() {
+        if (lastBack == 0 || System.currentTimeMillis() - lastBack > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次返回退出程序", Toast.LENGTH_SHORT).show();
+            lastBack = System.currentTimeMillis();
+            return;
+        }
+        super.onBackPressed();
     }
 }

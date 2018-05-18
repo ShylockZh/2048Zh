@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class ColorSettingActivity extends AppCompatActivity {
 
     int[] colors = {Color.rgb(187,173,160),Color.rgb(255,106,106),Color.rgb(144,238,144),Color.rgb(30,144,255),Color.rgb(238,221,130),Color.rgb(139,137,137)};
-    String[] string_color = {"默认","红色","绿色","蓝色","黄色","灰色"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +57,6 @@ public class ColorSettingActivity extends AppCompatActivity {
         SimpleAdapter simpleAdapter = new SimpleAdapter(this,arrayList,R.layout.colorsettinglayout,new String[]{"color","pic"},new int[]{R.id.textView_color,R.id.imageView});
         listView.setAdapter(simpleAdapter);
 
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,string_color);
-//
-//        listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -23,6 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/score_text"
                 android:text="@string/score"
                 android:textSize="20sp"
                 android:gravity="center"/>
@@ -75,30 +76,17 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/restart"
-            style="?android:attr/buttonStyle"/>
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/list"
             style="?android:attr/buttonStyle"/>
 
         <Button
             android:id="@+id/setting_btn"
-            style="?android:attr/buttonStyle"
+            style="@style/?android:attr/buttonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/setting" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/quit"
-            style="?android:attr/buttonStyle"/>
     </LinearLayout>
 
 </LinearLayout>
