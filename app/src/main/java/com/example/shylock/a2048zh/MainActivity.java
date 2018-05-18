@@ -1,5 +1,7 @@
 package com.example.shylock.a2048zh;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -23,13 +25,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
-    Button setting_btn,restart_btn;
+
     public MainActivity(){
-        mainActivity = this;
+        mainActivity=this;
     }
-
+    @SuppressLint("StaticFieldLeak")
+    private static MainActivity mainActivity=null;
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
+    Button setting_btn;
     ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
 
     int color;
@@ -55,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         score_text.setText(username + "'s Score:");
         popliset();
 
+
+
+    }
+    public void restart(View v){
+        clearScore();
+        GameView.getGameview().startGame();
     }
     public void clearScore(){
         score = 0;
@@ -69,13 +82,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        player.stop();
+    }
+
     private int score = 0;
     private TextView tvScore;
-    private  static MainActivity mainActivity = null;
 
-    public static MainActivity getMainActivity(){
-        return mainActivity;
-    }
     public void popliset(){
         setting_btn.setOnClickListener(new View.OnClickListener() {
 
@@ -130,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void store_score(){
-
 
     }
 

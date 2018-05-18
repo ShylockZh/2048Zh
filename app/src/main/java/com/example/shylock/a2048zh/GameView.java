@@ -1,5 +1,6 @@
 package com.example.shylock.a2048zh;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridLayout;
 
 import java.util.ArrayList;
@@ -22,28 +24,25 @@ import java.util.ArrayList;
 public class GameView extends GridLayout {
     public GameView(Context context) {
         super(context);
+        gameView = this;
         initGameView();
-    }
-
-    private  static GameView gameView = null;
-    public static GameView getGameView(){
-        return gameView;
     }
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        gameView = this;
         initGameView();
     }
 
     public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        gameView = this;
         initGameView();
     }
 
     private void  initGameView(){
         setColumnCount(4);
         addCards(GetCardWidth(),GetCardWidth());
-//        MainActivity.getMainActivity().clearScore();
         setOnTouchListener(new View.OnTouchListener(){
 
             private float startX,startY,offsetX,offsetY;
@@ -104,11 +103,11 @@ public class GameView extends GridLayout {
                 cardsMap[x][y] = c;//记录卡片位置状态
             }
         }
+//        MainActivity.getMainActivity().clearScore();
         startGame();
     }
 
     public void startGame(){
-
         for(int y = 0;y < 4;y++){
             for(int x = 0;x <4;x++){
                 cardsMap[x][y].setNum(0);
@@ -116,6 +115,7 @@ public class GameView extends GridLayout {
         }
         addRandomNum();
         addRandomNum();
+//        MainActivity.getMainActivity().clearScore();
     }
 
     private void addRandomNum(){
@@ -287,7 +287,12 @@ public class GameView extends GridLayout {
     }
 
 
+
     private Card[][] cardsMap = new Card[4][4];
     private ArrayList<Point> emptyPoints = new ArrayList<Point>();
+    private static GameView gameView=null;
+    public static GameView getGameview() {
+        return gameView;
+    }
 
 }

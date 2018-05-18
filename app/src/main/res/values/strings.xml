@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">2048Zh</string>
+    <string name="app_name">MY2048</string>
     <string name="score">Score:</string>
     <string name="highest_score">Highest Score:</string>
     <string name="restart">重新开始</string>

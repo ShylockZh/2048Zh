@@ -59,33 +59,39 @@
         </LinearLayout>
 
     </LinearLayout>
-
     <com.example.shylock.a2048zh.GameView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/gameView">
-    </com.example.shylock.a2048zh.GameView>
-
+        android:id="@+id/gameView"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:orientation="horizontal">
 
         <Button
+            style="?android:attr/buttonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/list"
-            style="?android:attr/buttonStyle"/>
+
+            android:text="@string/list" />
 
         <Button
             android:id="@+id/setting_btn"
-            style="@style/?android:attr/buttonStyle"
+            style="?android:attr/buttonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/setting" />
+        <Button
+            android:id="@+id/restart_btn"
+            style="?android:attr/buttonStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="restart"
+            android:text="@string/restart" />
 
     </LinearLayout>
 
