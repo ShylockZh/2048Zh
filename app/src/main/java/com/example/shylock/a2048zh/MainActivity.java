@@ -2,6 +2,8 @@ package com.example.shylock.a2048zh;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -66,8 +68,23 @@ public class MainActivity extends Activity {
 
     }
     public void restart(View v){
-        clearScore();
-        GameView.getGameview().startGame();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("你好").setMessage("确认重新开始？");
+        builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                clearScore();
+                GameView.getGameview().startGame();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+
     }
     public void clearScore(){
         score = 0;
@@ -114,7 +131,6 @@ public class MainActivity extends Activity {
                                     player.start();
                                     isPlay = true;
                                 }
-
                                 break;
                             case R.id.color:
                                 Toast.makeText(MainActivity.this,"pop "+getResources().getString(R.string.color_setting),Toast.LENGTH_SHORT).show();
