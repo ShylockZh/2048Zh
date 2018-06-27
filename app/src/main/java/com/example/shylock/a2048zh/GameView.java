@@ -115,7 +115,6 @@ public class GameView extends GridLayout {
         }
         addRandomNum();
         addRandomNum();
-//        MainActivity.getMainActivity().clearScore();
     }
 
     private void addRandomNum(){
@@ -130,7 +129,7 @@ public class GameView extends GridLayout {
             }
         }
         Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));//随机产生一个空点
-        cardsMap[p.x][p.y].setNum(Math.random() > 0.08 ? 2 : 4);//2：4=9:1
+        cardsMap[p.x][p.y].setNum(Math.random() > 0.08 ? 2 : 4);//2：4
     }
 
     private void swipeLeft(){
